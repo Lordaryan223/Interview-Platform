@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import apiRoutes from "./routes/api.js";
 
+
 const app = express();
 
 app.use(express.json());
@@ -11,6 +12,18 @@ app.use("/api", apiRoutes);
 
 // 🔹 Serve frontend
 const __dirname = path.resolve();
+
+app.route("/health").get((req,res)=>{
+   res.json({message:"health is good "})
+})
+app.route("/health").get((req, res) => {
+   res.json({message:"Health is good"});
+});
+
+app.route("/books").get((req,res)=>{
+   res.json({message:"book is good"});
+
+})
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
