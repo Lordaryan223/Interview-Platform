@@ -10,6 +10,7 @@ app.use("/api", apiRoutes);
 
 // 🔹 Serve frontend
 const __dirname = path.resolve();
+
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // 🔹 React router fallback (VERY IMPORTANT)
