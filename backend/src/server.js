@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import apiRoutes from "./routes/api.js";
 
 const app = express();
 
