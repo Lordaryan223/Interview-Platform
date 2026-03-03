@@ -3,6 +3,11 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+
+const API = import.meta.env.VITE_API_URL;
+
+axios.get(`${API}/api/products`)
+
 function App() {
   const [count, setCount] = useState(0)
 
