@@ -4,8 +4,10 @@ import path from "path"
 import { fileURLToPath } from "url";
 
 //const __filename = fileURLToPath(import.meta.url);
-const __dirname = import.meta.dirname;
+//const __dirname = import.meta.dirname;
 const app=express();
+
+const __dirname=path.resolve();
 
  app.get("/health",(req,res)=>{
     res.status(200).json({msg:"success from api nodemon 123"})
@@ -23,9 +25,5 @@ if (ENV.NODE_ENV === "production") {
     });
  }
 
- app.listen(ENV.PORT,()=>{
-    console.log("server is running on port 3000")
- })
-
- const port = process.env.PORT || 5000;
-app.listen(port)
+ const PORT = process.env.PORT || 5000;
+ app.listen(PORT);
