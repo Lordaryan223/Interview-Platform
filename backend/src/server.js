@@ -16,9 +16,7 @@ const __dirname = path.resolve();
 app.route("/health").get((req,res)=>{
    res.json({message:"health is good "})
 })
-app.route("/health").get((req, res) => {
-   res.json({message:"Health is good"});
-});
+
 
 app.route("/books").get((req,res)=>{
    res.json({message:"book is good"});
