@@ -3,6 +3,8 @@ import path from "path";
 import apiRoutes from "./routes/api.js";
 import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 
 const app = express();
