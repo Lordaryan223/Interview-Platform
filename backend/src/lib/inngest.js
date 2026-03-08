@@ -6,7 +6,7 @@ export const inngest = new Inngest({id:"talent-iq"})
 
 const syncUser=inngest.createFunction(
 
-        {id:"sync-user"},
+        {id:"sync-user-v2"},
         {event:"clerk/user.created"},
 
         async({event})=>{
@@ -28,7 +28,7 @@ await User.create(newUser)
 
 const deleteUserFromDb = inngest.createFunction(
 
-    {id:"delete-user-from-db"},
+    {id:"delete-user-from-db-v2"},
     {event:"clerk/user.deleted"},
 
     async({event})=>{
