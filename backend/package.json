@@ -16,7 +16,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "inngest": "^3.52.6",
-    "mongoose": "^9.1.6"
+    "mongoose": "^9.1.6",
+    "stream-chat": "^9.35.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
