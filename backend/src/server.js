@@ -22,11 +22,16 @@ app.use(express.json());
 // credentials:true => erver allow a browser to include cookie on request
 app.use(cors({origin:ENV.CLIENT_URL, credentials:true }))
 
-// 🔹 API routes first
-app.use("/api", apiRoutes);
+
+app.use("/api/inngest", serve({
+   client: inngest,
+   functions
+ }));
+ 
+ app.use("/api", apiRoutes);
 
 
-app.use("/api/inngest",serve({client:inngest, functions}))
+
 
 // 🔹 Serve frontend
 const __dirname = path.resolve();
