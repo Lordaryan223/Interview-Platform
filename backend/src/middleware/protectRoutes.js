@@ -5,7 +5,7 @@ export const protectRoute=[
     requireAuth({signInUrl:"/sign-in"}),
     async(req,res,next)=>{
         try{
-            const clerkId= req.auth.userId
+            const clerkId= req.auth().userId
             if(!clerkId) return res.status(401).json({message:"unauthrized access"})
 
                 const user=await User.findOne({clerkId})
