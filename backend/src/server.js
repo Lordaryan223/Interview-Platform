@@ -5,9 +5,14 @@ import { connectDB } from "./lib/db.js";
 import { ENV } from "./lib/env.js";
 import dotenv from "dotenv";
 import cors from "cors"
+
+import {clerkMiddleware} from "@clerk/express"
 import { functions } from "./lib/inngest.js";
 import {serve} from "inngest/express";
 import { inngest } from "./lib/inngest.js";
+import { protectRoute } from "./middleware/protectRoutes.js";
+import chatRoutes from "./routes/chatRoutes.js";
+
 
 
 
@@ -27,8 +32,11 @@ app.use("/api/inngest", serve({
    client: inngest,
    functions
  }));
+ app.use("/api/chat",chatRoutes)
  
  app.use("/api", apiRoutes);
+ app.use(clerkMiddleware()) // app.use middleware is user for all the outes.
+
 
 
 
@@ -37,13 +45,19 @@ app.use("/api/inngest", serve({
 const __dirname = path.resolve();
 
 app.route("/health").get((req,res)=>{
+req.auth()
    res.json({message:"health is good "})
-})
+})  // app.getis used for specific routes.
 
 
 app.route("/books").get((req,res)=>{
    res.json({message:"book is good"});
 
+})
+
+app.get("/video-call",protectRoute,(req,res)=>{
+   
+   res.status(200).json({msg:" video call endpoint"})
 })
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
@@ -52,6 +66,9 @@ app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.get((req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
+
+
+
 
 const PORT = process.env.PORT || 8000;
 
