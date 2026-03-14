@@ -12,6 +12,7 @@ import {serve} from "inngest/express";
 import { inngest } from "./lib/inngest.js";
 import { protectRoute } from "./middleware/protectRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import sessionRoute from "./routes/sessionRoute.js"
 
 
 
@@ -33,6 +34,7 @@ app.use("/api/inngest", serve({
    functions
  }));
  app.use("/api/chat",chatRoutes)
+ app.use("/api/sessions",sessionRoute)
  
  app.use("/api", apiRoutes);
  app.use(clerkMiddleware()) // app.use middleware is user for all the outes.
@@ -78,10 +80,10 @@ const startServer=async()=>{
    try{
      await connectDB();
      app.listen(ENV.PORT,()=>{
-      console.log("server is running on port",ENV.PORT);
+      console.log(" ✅server is running on port",ENV.PORT);
    })
    }catch(error){
-         console.log("error starting the server",error)
+         console.log("❌error starting the server",error)
 
    }
 }
