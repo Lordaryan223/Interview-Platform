@@ -1,37 +1,29 @@
 
-import { SignInButton,SignedIn,SignedOut, SignOutButton, UserButton,SignIn} from '@clerk/clerk-react';
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { SignInButton,SignedIn,SignedOut, SignOutButton, UserButton,SignIn, useUser} from '@clerk/clerk-react';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+
+import HomePage from './pages/homepage';
+import ProblemPage from './pages/ProblemPage';
+import {Toaster} from "react-hot-toast"
 
 const API = import.meta.env.VITE_API_URL;
 
 //axios.get(`${API}/api/products`)
 
 
-function Home() {
+function App() {
+  const {isSignedIn}=useUser()
   return (
     <>
-      <p>welcome to the app</p>
+    <Routes>
+     
+      <Route path="/" element={<HomePage/>}/>
+     
+      <Route path='/problems' element={isSignedIn? <ProblemPage/>:<Navigate to={"/"}/>}/>
 
-      <SignedOut>
-        <SignInButton mode="modal" />
-      </SignedOut>
-
-      <SignedIn>
-        <SignOutButton />
-        <UserButton />
-      </SignedIn>
+    </Routes>
+    <Toaster toastOptions={{duration:2000}} />
     </>
   )
 }
-function App(){
-  return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home /> } />
-    <Route path="/sign-in/*"element={<SignIn/>}/>
-    </Routes>
-    </BrowserRouter>
-  )
-}
-
-export default App
+ export default App;
