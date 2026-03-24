@@ -26,10 +26,7 @@ function App() {
           element={isSignedIn ? <ProblemsPage /> : <Navigate to="/" />}
         />
 
-<Route
-          path="/dashboard"
-          element={isSignedIn ? <DashboardPage /> : <Navigate to="/" />}
-        />
+
         <Route
           path="/problem/:id"
           element={isSignedIn ? <ProblemPage /> : <Navigate to="/" />}

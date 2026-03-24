@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import Navbar from "../components/Navbar.jsx";
 
-import { PROBLEMS } from "../Data/problem.JS";
+import { PROBLEMS } from '../allProblem/allProblems';
 import { ChevronRightIcon, Code2Icon } from "lucide-react";
 import { giveDifficultyBadgeClass } from "../lib/util.js";
 
