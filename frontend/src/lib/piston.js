@@ -1,85 +1,36 @@
-import { Languages } from "lucide-react";
-import { version } from "react";
+const BACKEND_API =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:3000"
+    : "https://interview-platform-r32c.onrender.com/";
 
-const PISTON_API = "https://emkc.org/api/v2/piston";
+export async function executeCode(language, code) {
+  try {
+    const response = await fetch(`${BACKEND_API}/api/code/run`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        language,
+        code,
+      }),
+    });
 
-const LANGUAGE_VERSION={
-    javascript:{language:"javascript", version:"18.15.0"},
-    python:{language:"python", version:"3.10.0"},
-   java:{language:"java", version:"15.0.2"}
-}
-/**
- * @param {string} language - programming language
- * @param {string} code - source code to executed
- * @returns {Promise<{success:boolean, output?:string, error?: string}>}
- */
-
-export async function executeCode(language,code){
-    try {
-        const languageConfig=LANGUAGE_VERSION[language];
-        if(!languageConfig){
-            return{
-                success:false,
-                error:`Unsupported language:${language}`
-            }
-
-        };
-
-        const response=await fetch(`${PISTON_API}/execute`,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                language:languageConfig.language,
-                version:languageConfig.version,
-                files:[{
-                    name:`main.${getFileExtention(language)}`,
-                    content:code,
-                }
-                ]
-            })
-        })
-        if(!response.ok){
-            return {
-                success:false,
-                error:`HTTp error status:${response.status}`
-            }
-        }
-        const data= await response.json()
-
-        const output=data.run.stdout ||"";
-        const stderr=data.run.stderr || "";
-
-        if(stderr){
-            return {
-                success:false,
-                output:output,
-                error:stderr
-            }
-        }
-
-        return {
-            success:true,
-            output:output||"No output"
-        }
-
-
-        
-    } catch (error) {
-        return {
-            success: false,
-            error: `Failed to execute code: ${error.message}`,
-    };
-}
-}
-
-function getFileExtention(language){
-    const extentions={
-        javascript:"js",
-        python:"py",
-        java:"java"
-
+    if (!response.ok) {
+      return {
+        success: false,
+        error: `HTTP error status: ${response.status}`,
+      };
     }
-    return extentions[language]||"txt"
+
+    const data = await response.json();
+
+    return data; // backend already formats response
+
+  } catch (error) {
+    return {
+      success: false,
+      error: `Failed to execute code: ${error.message}`,
+    };
+  }
 }

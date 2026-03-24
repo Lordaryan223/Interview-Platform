@@ -13,6 +13,7 @@ import { inngest } from "./lib/inngest.js";
 import { protectRoute } from "./middleware/protectRoutes.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import sessionRoute from "./routes/sessionRoute.js"
+import codeRoutes from "./routes/codeRoutes.js";
 
 
 
@@ -40,7 +41,7 @@ app.use("/api/inngest", serve({
  app.use(clerkMiddleware()) // app.use middleware is user for all the outes.
 
 
-
+ app.use("/api/code", codeRoutes);
 
 
 // 🔹 Serve frontend
@@ -61,6 +62,7 @@ app.get("/video-call",protectRoute,(req,res)=>{
    
    res.status(200).json({msg:" video call endpoint"})
 })
+
 
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 

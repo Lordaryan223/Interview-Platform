@@ -9,11 +9,13 @@ import * as ResizablePanels from "react-resizable-panels";
 import toast from 'react-hot-toast';
 import { Toaster } from "react-hot-toast";
 
+
 const Panel = ResizablePanels.Panel || ResizablePanels.default?.Panel;
 const PanelGroup = ResizablePanels.PanelGroup || ResizablePanels.default?.PanelGroup;
 const PanelResizeHandle = ResizablePanels.PanelResizeHandle || ResizablePanels.default?.PanelResizeHandle;
 
 import { executeCode } from '../lib/piston.js'; 
+import confetti from "canvas-confetti"
 
 
 
@@ -72,37 +74,22 @@ const triggerConfetti = () => {
     origin: { x: 0.8, y: 0.6 },
   });
 };
-const normalizeOutput = (output) => {
-  // normalize output for comparison (trim whitespace, handle different spacing)
-  return output
-    .trim()
-    .split("\n")
-    .map((line) =>
-      line
-        .trim()
-        // remove spaces after [ and before ]
-        .replace(/\[\s+/g, "[")
-        .replace(/\s+\]/g, "]")
-        // normalize spaces around commas to single space after comma
-        .replace(/\s*,\s*/g, ",")
-    )
-    .filter((line) => line.length > 0)
-    .join("\n");
+
+
+
+
+
+
+const checkIfTestsPassed = (actualOutput, expectedOutput) => {
+  const actual = actualOutput.trim().replace(/\s/g, "");
+  const expected = expectedOutput.trim().replace(/\s/g, "");
+  
+  console.log("Actual:  ", actual);
+  console.log("Expected:", expected);
+  console.log("Match:", actual === expected);
+  
+  return actual === expected;
 };
-
-
-
-
-const  checkIfTestsPassed=(actualOutput,expectedOutput)=>{
-  const normalizeActual=normalizeOutput(actualOutput);
-  const normalizeExpected=normalizeOutput(expectedOutput)
-
- return  normalizeActual===normalizeExpected
-
-  }
-
-
-
 
   const handleRunCode = async () => {
     setIsRunning(true);
