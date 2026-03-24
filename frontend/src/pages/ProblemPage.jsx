@@ -6,12 +6,16 @@ import ProblemDescription from '../components/ProblemDescription';
 import CodeEditorPanel from '../components/CodeEditorPanel';
 import OutputPanel from '../components/OutputPanel';
 import * as ResizablePanels from "react-resizable-panels";
+import toast from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+
 const Panel = ResizablePanels.Panel || ResizablePanels.default?.Panel;
 const PanelGroup = ResizablePanels.PanelGroup || ResizablePanels.default?.PanelGroup;
 const PanelResizeHandle = ResizablePanels.PanelResizeHandle || ResizablePanels.default?.PanelResizeHandle;
 
-// Debug (remove later)
-console.log("Panels:", { Panel, PanelGroup, PanelResizeHandle });
+import { executeCode } from '../lib/piston.js'; 
+
+
 
 function ProblemPage() {
     const {id}=useParams()
@@ -41,8 +45,11 @@ useEffect(() => {
 }, [selectedLanguage, currentProblemId]);
 
 
-const handleLanguageChange=()=>{
-
+const handleLanguageChange=(e)=>{
+  const newLang=e.target.value
+  setSelectLanguage(newLang)
+  setCode(currentProblem.starterCode[newLang])
+  setOutput(null)
 
 }
 const handleProblemChanges = (newProblemId) => {
@@ -52,23 +59,85 @@ const handleProblemChanges = (newProblemId) => {
 };
 
 
-const triggerConfetti=()=>{
+const triggerConfetti = () => {
+  confetti({
+    particleCount: 80,
+    spread: 250,
+    origin: { x: 0.2, y: 0.6 },
+  });
 
-}
+  confetti({
+    particleCount: 80,
+    spread: 250,
+    origin: { x: 0.8, y: 0.6 },
+  });
+};
+const normalizeOutput = (output) => {
+  // normalize output for comparison (trim whitespace, handle different spacing)
+  return output
+    .trim()
+    .split("\n")
+    .map((line) =>
+      line
+        .trim()
+        // remove spaces after [ and before ]
+        .replace(/\[\s+/g, "[")
+        .replace(/\s+\]/g, "]")
+        // normalize spaces around commas to single space after comma
+        .replace(/\s*,\s*/g, ",")
+    )
+    .filter((line) => line.length > 0)
+    .join("\n");
+};
 
-const  checkIfTestsPassed=()=>{
 
-}
 
-const handleRunCode=()=>{
 
-}
+const  checkIfTestsPassed=(actualOutput,expectedOutput)=>{
+  const normalizeActual=normalizeOutput(actualOutput);
+  const normalizeExpected=normalizeOutput(expectedOutput)
+
+ return  normalizeActual===normalizeExpected
+
+  }
+
+
+
+
+  const handleRunCode = async () => {
+    setIsRunning(true);
+    setOutput(null);
+
+    const result = await executeCode(selectedLanguage, code);
+    setOutput(result);
+    setIsRunning(false);
+
+    // check if code executed successfully and matches expected output
+
+    if (result.success) {
+      const expectedOutput = currentProblem.expectedOutput[selectedLanguage];
+      const testsPassed = checkIfTestsPassed(result.output, expectedOutput);
+
+      if (testsPassed) {
+        triggerConfetti();
+        toast.success("All tests passed! Great job!");
+      } else {
+        toast.error("Tests failed. Check your output!");
+      }
+    } else {
+      toast.error("Code execution failed!");
+    }
+  };
+
+    
+
 
 
 
 return (
   <div className="h-screen bg-base-100 flex flex-col">
     <Navbar />
+    <Toaster />
 
     <div className="flex-1 overflow-hidden " >
       <PanelGroup direction="horizontal">
