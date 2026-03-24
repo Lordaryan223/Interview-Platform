@@ -1,7 +1,8 @@
-const BACKEND_API =
+/*const BACKEND_API =
   import.meta.env.MODE === "development"
     ? "http://localhost:3000"
-    : "https://interview-platform-r32c.onrender.com/";
+    : "https://interview-platform-r32c.onrender.com/"; */
+    const BACKEND_API="https://interview-platform-r32c.onrender.com/"
 
 export async function executeCode(language, code) {
   try {
