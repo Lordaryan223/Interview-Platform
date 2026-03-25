@@ -67,9 +67,9 @@ app.get("/video-call",protectRoute,(req,res)=>{
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // 🔹 React router fallback (VERY IMPORTANT)
-app.get((req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-});
+app.get("/{*path}", (req, res) => {  // ✅
+   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+ });
 
 
 
