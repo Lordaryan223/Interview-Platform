@@ -61,7 +61,7 @@ export async function getActiveSessions(_,res) {
 }
 export async function getMyRecentSessions(req,res) {
     try {
-        const userId=req.userId._id;
+        const userId=req.userId;
 
         const session=await Session.find(
             {

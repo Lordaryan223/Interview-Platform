@@ -81,8 +81,8 @@ const triggerConfetti = () => {
 
 
 const checkIfTestsPassed = (actualOutput, expectedOutput) => {
-  const actual = actualOutput.trim().replace(/\s/g, "");
-  const expected = expectedOutput.trim().replace(/\s/g, "");
+  const actual = actualOutput.trim().replace(/'/g, '"').replace(/\s/g, "");
+const expected = expectedOutput.trim().replace(/'/g, '"').replace(/\s/g, "");
   
   console.log("Actual:  ", actual);
   console.log("Expected:", expected);
@@ -161,7 +161,8 @@ return (
             {/* Bottom panel - Output Panel*/}
 
             <Panel defaultSize={30} minSize={30}>
-              <OutputPanel  />
+              <OutputPanel
+              output={output}  />
             </Panel>
           </PanelGroup>
         </Panel>

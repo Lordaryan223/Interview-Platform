@@ -6,6 +6,7 @@ import HomePage from './pages/homepage';
 import ProblemPage from './pages/ProblemPage';
 import toast, {Toaster} from "react-hot-toast"
 import ProblemsPage from './pages/ProblemsPage';
+import DashboardPage from './pages/DashboardPagee.jsx';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -30,6 +31,11 @@ function App() {
         <Route
           path="/problem/:id"
           element={isSignedIn ? <ProblemPage /> : <Navigate to="/" />}
+        />
+
+<Route
+          path="dashboard"
+          element={isSignedIn ? <DashboardPage /> : <Navigate to="/" />}
         />
       </Routes>
       
