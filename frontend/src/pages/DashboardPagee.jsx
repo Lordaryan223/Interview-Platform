@@ -1,28 +1,110 @@
 import { useUser } from '@clerk/clerk-react'
 import React, { useState } from 'react'
 import { useActionData, useNavigate } from 'react-router'
-import { useCreateSession, useMyRescentSession } from '../hooks/useSessions'
+import { useCreateSession, useMyRecentSession } from '../hooks/useSessions'
 import { useActiveSessions } from '../hooks/useSessions'
+import Navbar from '../components/Navbar'
+import WelcomeSection from '../components/WelcomeSection'
+import RecentSessions from '../components/RecentSessions'
+import ActiveSessions from '../components/ActiveSessions'
+import CreateSessionsModal from '../components/CreateSessionsModal'
+import StatsCards from '../components/StatsCards'
 
 
 function DashboardPage() {
     const navigate=useNavigate()
     const {user}=useUser()
-    const [showCreateModel,setShowCreateModel]=useState(false)
+    const [showCreateModal,setShowCreateModal]=useState(false)
     const [roomConfig,setRoomConfig]=useState({problem:"",difficulty:""})
     const createSessionMutation=useCreateSession()
 
      const {data:activeSessionsData,isLoading:loadingActiveSessions}=useActiveSessions()
-     const{data:resentSessionData,isLoading:loadingRecentSessions}=useMyRescentSession()
+     const{data:recentSessionData,isLoading:loadingRecentSessions}=useMyRecentSession()
 
-     console.log(activeSessionsData)
-     console.log(resentSessionData)
+      const handleCreateRoom=()=>{
+        if(!roomConfig.problem || !roomConfig.difficulty) return;
 
-  return (
-    <div>
-      DashboardPage
+        createSessionMutation.mutate({
+          problem:roomConfig.problem,
+          difficulty:roomConfig.difficulty.toLowerCase()
+        },
+        {
+          onSuccess:(data)=>{
+            setShowCreateModal(false)
+            navigate(`/session/${data.session._id}`)
+          },
+          onError: (error) => {
+            console.error(error)}
+        }
+
+      )
+
+      }
+
+
+
+     const activeSessions= activeSessionsData?.session || []
+     const recentSessions= recentSessionData?.session || []
+
+     const isUserInSession=(session)=>{
+      if(!user.id) return false
+   return session.host?.clerk.Id === user.id || session.participants?.clerk.Id===user.id
+     }
+
+    return (
+      <>
+    <div className='min-h-screen bg-base-300'>
+      <Navbar/>
+      <WelcomeSection onCreateSession={()=>setShowCreateModal(true)} />
+         {/* Grid layout */}
+         <div className="container mx-auto px-6 pb-16">
+
+  {/* Stats row */}
+  <StatsCards
+    activeSessionsCount={activeSessions.length}
+    recentSessionCount={recentSessions.length}
+  />
+
+  {/* Main two-column layout */}
+  <div className="flex gap-6 mt-6">
+
+    {/* Left: Recent Sessions */}
+    <div className="flex-1 min-w-0">
+      <RecentSessions
+      sessions={recentSessions}
+      isLoading={loadingRecentSessions}
+       />
     </div>
+
+    {/* Right: Active Sessions — fixed width, sticky */}
+    <div className="w-100 shrink-0">
+      <div className="sticky top-6">
+        <ActiveSessions
+          sessions={activeSessions}
+          isLoading={loadingActiveSessions}
+          isUserInSession={isUserInSession}
+        />
+      </div>
+    </div>
+
+  </div>
+
+</div>
+    </div>
+    <CreateSessionsModal
+
+    isOpen={showCreateModal}
+    onClose={()=>setShowCreateModal(false)}
+    roomConfig={roomConfig}
+    setRoomConfig={setRoomConfig}
+    onCreateRoom={handleCreateRoom}
+    isCreating={createSessionMutation.isPending}
+
+    
+    />
+    </>
   )
+ 
 }
 
 export default DashboardPage

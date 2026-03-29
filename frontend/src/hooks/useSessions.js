@@ -6,7 +6,7 @@ import { sessionApi } from "../api/session"
 export const useCreateSession=()=>{
     const result=useMutation({
      
-        mutationFn:(data)=>sessionApi.createSession(),
+        mutationFn:(data)=>sessionApi.createSession(data),
         onSuccess:()=>toast.success("session created successfullt"),
         onError:(error)=>toast.error(error.response?.data?.message || "failed to crate room")
     })
@@ -22,7 +22,7 @@ export const useActiveSessions=()=>{
     return result
 }
 
-export const useMyRescentSession=()=>{
+export const useMyRecentSession=()=>{
     const result=useQuery({
         queryKey:["myRescentSessions"],
         queryFn:()=> sessionApi.getMyRecentSessions()
@@ -33,7 +33,7 @@ export const useMyRescentSession=()=>{
 export const useSessionById=(id)=>{
     const result=useQuery({
         queryKey:["session",id],
-        queryFn:()=> sessionApi.getSessionId(id),
+        queryFn:()=> sessionApi.getSessionById(id),
         enabled: !!id,
         refetchInterval:5000, // refetch every 5sec to detects session status changes 
 

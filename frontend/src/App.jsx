@@ -34,7 +34,7 @@ function App() {
         />
 
 <Route
-          path="dashboard"
+          path="/dashboard"
           element={isSignedIn ? <DashboardPage /> : <Navigate to="/" />}
         />
       </Routes>

@@ -44,7 +44,7 @@ export async function getActiveSessions(_,res) {
    try {
      const session = await Session.find({status:"active"})
      .populate("host","name email profileImage clerkId")
-     .populate("participant","name email clerkId profileImage")
+     .populate("participants","name email clerkId profileImage")
      .sort({createdAt:-1})
      .limit(20)
 
