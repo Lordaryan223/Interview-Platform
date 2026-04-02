@@ -41,7 +41,7 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
           borderBottom: "0.5px solid var(--color-border-tertiary)"
         }}>
           <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-            Active Sessions
+            Live Sessions
           </span>
           <span style={{
             fontSize: "11px", padding: "2px 8px", borderRadius: "999px",

@@ -16,7 +16,7 @@ router.get("/my-recent",protectRoute,getMyRecentSessions)
 
 router.get("/:id",protectRoute,getSessionId)
 router.post("/:id/join",protectRoute,joinSession)
-router.post("/:id/end",protectRoute,endSession)
+router.patch("/:id/end",protectRoute,endSession)
 
 
 

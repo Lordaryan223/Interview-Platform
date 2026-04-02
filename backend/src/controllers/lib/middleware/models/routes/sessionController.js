@@ -86,7 +86,7 @@ export async function getSessionId(req,res) {
         const {id}=req.params;  // we have to declare a const whhich we have in our findbyid Route and that is id
         const session = await Session.findById(id)
         .populate("host","name email clerkId profileImage")
-        .populate("participant","name email clerkId profileImage")
+        .populate("participants","name email clerkId profileImage")
 
         if(!session){
           return  res.status(404).json({msg:"session not found"})

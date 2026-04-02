@@ -1,12 +1,13 @@
 
-import { SignInButton,SignedIn,SignedOut, SignOutButton, UserButton,SignIn, useUser} from '@clerk/clerk-react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { useUser } from '@clerk/clerk-react';
+import { Navigate, Route, Routes } from "react-router-dom";
 
+import { Toaster } from "react-hot-toast";
+import DashboardPage from './pages/DashboardPagee.jsx';
 import HomePage from './pages/homepage';
 import ProblemPage from './pages/ProblemPage';
-import toast, {Toaster} from "react-hot-toast"
 import ProblemsPage from './pages/ProblemsPage';
-import DashboardPage from './pages/DashboardPagee.jsx';
+import SessionPage from './pages/SessionPage.jsx';
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -37,7 +38,17 @@ function App() {
           path="/dashboard"
           element={isSignedIn ? <DashboardPage /> : <Navigate to="/" />}
         />
+
+<Route
+          path="/session/:id"
+          element={isSignedIn ? <SessionPage/> : <Navigate to="/" />}
+        />
+        
+
+
       </Routes>
+
+      
       
   
     </>

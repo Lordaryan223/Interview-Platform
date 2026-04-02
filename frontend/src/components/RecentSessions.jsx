@@ -1,4 +1,4 @@
-import React from 'react'
+
 
 function RecentSessions({ sessions, isLoading }) {
   if (isLoading) return <p style={{ color: "var(--color-text-secondary)", fontSize: "14px" }}>Loading...</p>;
@@ -27,6 +27,8 @@ function RecentSessions({ sessions, isLoading }) {
     new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
   return (
+    
+    
     <div style={{
       background: "var(--color-background-secondary)",
       border: "0.5px solid var(--color-border-tertiary)",
@@ -46,6 +48,7 @@ function RecentSessions({ sessions, isLoading }) {
         <span style={{ fontSize: "14px", fontWeight: 500, color: "var(--color-text-primary)" }}>
           Recent Sessions
         </span>
+        
         <span style={{
           fontSize: "11px", padding: "2px 8px", borderRadius: "999px",
           background: "var(--color-background-primary)",

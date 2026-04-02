@@ -45,7 +45,7 @@ export const useSessionById=(id)=>{
 export const useJoinSession=()=>{
      const result = useMutation({
           mutationKey:["joinSession"],
-          mutationFn:sessionApi.joinSession(),
+          mutationFn:sessionApi.joinSession,
           onSuccess:()=>toast.success("joined session successfully"),
           onError:()=>toast.error(error.response?.data?.message|| "cound not join session")
 
@@ -53,12 +53,19 @@ export const useJoinSession=()=>{
      return result
 }
 export const useEndSession=()=>{
-    const result = useMutation({
-         mutationKey:["endSession"],
-         mutationFn:sessionApi.endSession(),
-         onSuccess:()=>toast.success("ended session successfully"),
-         onError:()=>toast.error(error.response?.data?.message|| "Failed to exit session ")
 
-    })
-    return result
+        const result = useMutation({
+             mutationKey:["endSession"],
+             mutationFn:sessionApi.endSession,
+             onSuccess:()=>toast.success("ended session successfully"),
+             onError:(error)=>toast.error(error.response?.data?.message|| "Failed to exit session ")
+
+    
+        })
+        return result
+    
+        
+        
+    
+    
 }
