@@ -27,7 +27,7 @@ const app = express();
 //middleware
 app.use(express.json());
 // credentials:true => erver allow a browser to include cookie on request
-app.use(cors({origin:ENV.CLIENT_URL, credentials:true }))
+app.use(cors({origin:'https://interview-platform-r32c.onrender.com', credentials:true }))
 
 
 app.use("/api/inngest", serve({
