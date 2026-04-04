@@ -25,9 +25,27 @@ dotenv.config();
 const app = express();
 
 //middleware
-app.use(express.json());
-// credentials:true => erver allow a browser to include cookie on request
-app.use(cors({origin:'https://interview-platform-r32c.onrender.com', credentials:true }))
+const allowedOrigins = [
+  'http://localhost:5173',                              // Local dev
+  'http://localhost:3000',                              // Alternative local
+  'https://interview-platform-r32c.onrender.com',       // Production frontend
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 
 app.use("/api/inngest", serve({
