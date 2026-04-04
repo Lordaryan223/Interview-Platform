@@ -22,10 +22,11 @@ import confetti from "canvas-confetti"
 function ProblemPage() {
     const {id}=useParams()
     const navigate=useNavigate()
+    
 
     const [currentProblemId, setCurrentProblemId] = useState("two-sum");
-const [selectedLanguage, setSelectLanguage] = useState("javascript");
-const [code, setCode] = useState(PROBLEMS["two-sum"].starterCode.javascript);
+const [selectedLanguage, setSelectedLanguage] = useState("javascript");
+const [code, setCode] = useState("");
 const [output, setOutput] = useState(null);
 const [isRunning, setIsRunning] = useState(false);
 
@@ -41,19 +42,23 @@ useEffect(() => {
 
 // when language changes
 useEffect(() => {
-  if (currentProblemId) {
-    setCode(PROBLEMS[currentProblemId].starterCode[selectedLanguage]);
+  if (currentProblem && selectedLanguage) {
+    setCode(currentProblem.starterCode?.[selectedLanguage] || "");
   }
-}, [selectedLanguage, currentProblemId]);
+}, [currentProblemId, selectedLanguage]);
 
 
-const handleLanguageChange=(e)=>{
-  const newLang=e.target.value
-  setSelectLanguage(newLang)
-  setCode(currentProblem.starterCode[newLang])
-  setOutput(null)
+const handleLanguageChange = (e) => {
+  const newLang = e.target.value;
+  setSelectedLanguage(newLang);
 
-}
+  if (currentProblem) {
+    setCode(currentProblem.starterCode?.[newLang] || "");
+  }
+
+  setOutput(null);
+};
+
 const handleProblemChanges = (newProblemId) => {
   if (newProblemId !== currentProblemId) {
     navigate(`/problem/${newProblemId}`);

@@ -1,163 +1,107 @@
-import React from 'react'
+import {
+  ArrowRightIcon,
+  Code2Icon,
+  CrownIcon,
+  SparklesIcon,
+  UsersIcon,
+  ZapIcon,
+  LoaderIcon,
+} from "lucide-react";
+import { Link } from "react-router";
+import { giveDifficultyBadgeClass } from "../lib/util";
 
 function ActiveSessions({ sessions, isLoading, isUserInSession }) {
-  if (isLoading) return <p style={{ color: "var(--color-text-secondary)", fontSize: "14px" }}>Loading...</p>;
-  if (!sessions?.length) return <p style={{ color: "var(--color-text-secondary)", fontSize: "14px" }}>No active sessions.</p>;
-
-  const difficultyStyles = {
-    easy:   { background: "#EAF3DE", color: "#27500A" },
-    medium: { background: "#FAEEDA", color: "#633806" },
-    hard:   { background: "#FAECE7", color: "#712B13" },
-  };
-
-  const rowGradients = [
-    "linear-gradient(135deg, #185FA5 0%, #378ADD 100%)",
-    "linear-gradient(135deg, #0F6E56 0%, #1D9E75 100%)",
-    "linear-gradient(135deg, #854F0B 0%, #EF9F27 100%)",
-    "linear-gradient(135deg, #533AB7 0%, #7F77DD 100%)",
-    "linear-gradient(135deg, #993C1D 0%, #D85A30 100%)",
-  ];
-
-  const getInitials = (username) =>
-    username ? username.slice(0, 2).toUpperCase() : "?";
-
   return (
-    <div style={{ display: "flex", justifyContent: "flex-end" }}>
-      <div style={{
-        width: "380px",
-        background: "var(--color-background-secondary)",
-        border: "0.5px solid var(--color-border-tertiary)",
-        borderRadius: "var(--border-radius-lg)",
-        padding: "14px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px"
-      }}>
+    <div className="lg:col-span-2 card bg-base-100 border-2 border-primary/20 hover:border-primary/30 h-full">
+      <div className="card-body">
+        {/* HEADERS SECTION */}
+        <div className="flex items-center justify-between mb-6">
+          {/* TITLE AND ICON */}
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-linear-to-br from-primary to-secondary rounded-xl">
+              <ZapIcon className="size-5" />
+            </div>
+            <h2 className="text-2xl font-black">Live Sessions</h2>
+          </div>
 
-        {/* Header */}
-        <div style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "0 4px 8px",
-          borderBottom: "0.5px solid var(--color-border-tertiary)"
-        }}>
-          <span style={{ fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-            Live Sessions
-          </span>
-          <span style={{
-            fontSize: "11px", padding: "2px 8px", borderRadius: "999px",
-            background: "var(--color-background-info)", color: "var(--color-text-info)"
-          }}>
-            {sessions.length} live
-          </span>
+          <div className="flex items-center gap-2">
+            <div className="size-2 bg-success rounded-full" />
+            <span className="text-sm font-medium text-success">{sessions.length} active</span>
+          </div>
         </div>
 
-        {/* Session rows */}
-        {sessions.map((session, i) => {
-          const participantCount = (session.participants?.length ?? 0) + 1;
-          const isFull = participantCount >= 2;
-          const diff = difficultyStyles[session.difficulty] || difficultyStyles.medium;
-          const gradient = rowGradients[i % rowGradients.length];
-          const participant = session.participants?.[0];
-
-          return (
-            <div key={session._id} style={{ borderRadius: "10px", overflow: "hidden", background: gradient }}>
-              <div style={{ padding: "12px 14px" }}>
-
-                {/* Top: name + count */}
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "10px" }}>
-                  <div>
-                    <p style={{ fontSize: "14px", fontWeight: 500, color: "#fff", margin: "0 0 4px" }}>
-                      {session.problem}
-                    </p>
-                    <span style={{ fontSize: "10px", fontWeight: 500, padding: "2px 8px", borderRadius: "999px", ...diff }}>
-                      {session.difficulty.charAt(0).toUpperCase() + session.difficulty.slice(1)}
-                    </span>
-                  </div>
-                  <div style={{
-                    display: "flex", alignItems: "center", gap: "4px",
-                    background: "rgba(255,255,255,0.15)", padding: "4px 8px", borderRadius: "999px"
-                  }}>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
-                      <circle cx="9" cy="8" r="4" fill="rgba(255,255,255,0.9)" />
-                      <circle cx="17" cy="8" r="4" fill="rgba(255,255,255,0.55)" />
-                      <path d="M1 20c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5" stroke="rgba(255,255,255,0.9)" strokeWidth="2" strokeLinecap="round" fill="none" />
-                      <path d="M17 13.5c3 0 6 1.8 6 5.5" stroke="rgba(255,255,255,0.55)" strokeWidth="2" strokeLinecap="round" fill="none" />
-                    </svg>
-                    <span style={{ fontSize: "12px", fontWeight: 500, color: "#fff" }}>{participantCount} / 2</span>
-                  </div>
-                </div>
-
-                {/* Bottom: usernames + join */}
-                <div style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  borderTop: "1px solid rgba(255,255,255,0.15)", paddingTop: "10px"
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                    {/* Host */}
-                    <div style={{
-                      width: "22px", height: "22px", borderRadius: "50%",
-                      background: "rgba(255,255,255,0.25)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: "10px", fontWeight: 500, color: "#fff"
-                    }}>
-                      {getInitials(session.host?.username)}
-                    </div>
-                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>
-                      {session.host?.username || "host"}
-                    </span>
-
-                    <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.4)" }}>·</span>
-
-                    {/* Participant or waiting slot */}
-                    {participant ? (
-                      <>
-                        <div style={{
-                          width: "22px", height: "22px", borderRadius: "50%",
-                          background: "rgba(255,255,255,0.25)",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "10px", fontWeight: 500, color: "#fff"
-                        }}>
-                          {getInitials(participant.username)}
-                        </div>
-                        <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.8)" }}>
-                          {participant.username}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <div style={{
-                          width: "22px", height: "22px", borderRadius: "50%",
-                          background: "rgba(255,255,255,0.12)",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          fontSize: "10px", color: "rgba(255,255,255,0.4)",
-                          border: "1px dashed rgba(255,255,255,0.3)"
-                        }}>+</div>
-                        <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)" }}>waiting...</span>
-                      </>
-                    )}
-                  </div>
-
-                  <button
-                    disabled={isFull || isUserInSession}
-                    style={{
-                      fontSize: "11px", padding: "4px 12px", borderRadius: "6px",
-                      background: isFull || isUserInSession ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.2)",
-                      color: isFull || isUserInSession ? "rgba(255,255,255,0.4)" : "#fff",
-                      border: "1px solid rgba(255,255,255,0.35)",
-                      cursor: isFull || isUserInSession ? "not-allowed" : "pointer"
-                    }}
-                  >
-                    {isFull ? "Full" : "Join"}
-                  </button>
-                </div>
-
-              </div>
+        {/* SESSIONS LIST */}
+        <div className="space-y-3 max-h-100 overflow-y-auto pr-2">
+          {isLoading ? (
+            <div className="flex items-center justify-center py-20">
+              <LoaderIcon className="size-10 animate-spin text-primary" />
             </div>
-          );
-        })}
+          ) : sessions.length > 0 ? (
+            sessions.map((session) => (
+              <div
+                key={session._id}
+                className="card bg-base-200 border-2 border-base-300 hover:border-primary/50"
+              >
+                <div className="flex items-center justify-between gap-4 p-5">
+                  {/* LEFT SIDE */}
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="relative size-14 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center">
+                      <Code2Icon className="size-7 text-white" />
+                      <div className="absolute -top-1 -right-1 size-4 bg-success rounded-full border-2 border-base-100" />
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="font-bold text-lg truncate">{session.problem}</h3>
+                        <span
+                          className={`badge badge-sm ${giveDifficultyBadgeClass(session.difficulty)}`}
+                        >
+                          {session.difficulty.slice(0, 1).toUpperCase() +
+                            session.difficulty.slice(1)}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-4 text-sm opacity-80">
+                        <div className="flex items-center gap-1.5">
+                          <CrownIcon className="size-4" />
+                          <span className="font-medium">{session.host?.name}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <UsersIcon className="size-4" />
+                          <span className="text-xs">{session.participant ? "2/2" : "1/2"}</span>
+                        </div>
+                        {session.participant && !isUserInSession(session) ? (
+                          <span className="badge badge-error badge-sm">FULL</span>
+                        ) : (
+                          <span className="badge badge-success badge-sm">OPEN</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {session.participant && !isUserInSession(session) ? (
+                    <button className="btn btn-disabled btn-sm">Full</button>
+                  ) : (
+                    <Link to={`/session/${session._id}`} className="btn btn-primary btn-sm gap-2">
+                      {isUserInSession(session) ? "Rejoin" : "Join"}
+                      <ArrowRightIcon className="size-4" />
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-4 bg-linear-to-br from-primary/20 to-secondary/20 rounded-3xl flex items-center justify-center">
+                <SparklesIcon className="w-10 h-10 text-primary/50" />
+              </div>
+              <p className="text-lg font-semibold opacity-70 mb-1">No active sessions</p>
+              <p className="text-sm opacity-50">Be the first to create one!</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 }
-
-export default ActiveSessions
+export default ActiveSessions;

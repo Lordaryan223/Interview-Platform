@@ -12,6 +12,7 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.61.3",
     "@monaco-editor/react": "^4.7.0",
+    "@stream-io/video-react-sdk": "^1.34.2",
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query": "^5.90.21",
     "axios": "^1.13.6",
@@ -24,6 +25,8 @@
     "react-router": "^7.13.1",
     "react-router-dom": "^7.13.1",
     "root": "github:tanstack/react-query",
+    "stream-chat": "^9.40.0",
+    "stream-chat-react": "^13.14.3",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
