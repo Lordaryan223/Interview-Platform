@@ -37,12 +37,18 @@ app.use(express.json());
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow Postman / mobile
+    if (!origin) return callback(null, true);
+
+    const allowedOrigins = [
+      process.env.CLIENT_URL,
+      'http://localhost:5173',
+      'http://localhost:3000',
+    ];
 
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("Not allowed by CORS: " + origin));
     }
   },
   credentials: true,
@@ -62,14 +68,8 @@ app.use("/api/inngest", serve({
 
  app.use("/api/code", codeRoutes);
 
- app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://interview-platform-r32c.onrender.com");
-  res.header("Access-Control-Allow-Credentials", "true");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-  next();
-});
+ 
 
-app.options('/{*path}', cors());
 
 
 // 🔹 Serve frontend
@@ -98,6 +98,8 @@ app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.get("/{*path}", (req, res) => {  // ✅
    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
  });
+
+
 
 
 
