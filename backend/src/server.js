@@ -24,27 +24,28 @@ dotenv.config();
 
 const app = express();
 
-//middleware
 const allowedOrigins = [
-  'http://localhost:5173',                              // Local dev
-  'http://localhost:3000',                              // Alternative local
-  'https://interview-platform-r32c.onrender.com',       // Production frontend
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://interview-platform-r32c.onrender.com', // frontend
 ];
 
+//middleware
+app.use(express.json());
+// credentials:true => erver allow a browser to include cookie on request
+
+
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, Postman)
-    if (!origin) return callback(null, true);
-    
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow Postman / mobile
+
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 
