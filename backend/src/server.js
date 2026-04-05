@@ -108,11 +108,13 @@ app.get("/{*path}", (req, res) => {  // ✅
  });
 
 
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
 
 
 
-
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 
 
