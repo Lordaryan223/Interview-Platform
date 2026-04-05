@@ -24,6 +24,8 @@ dotenv.config();
 
 const app = express();
 
+ app.use(clerkMiddleware())
+
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
@@ -63,7 +65,7 @@ app.use("/api/inngest", serve({
  app.use("/api/sessions",sessionRoute)
  
  app.use("/api", apiRoutes);
- app.use(clerkMiddleware()) // app.use middleware is user for all the outes.
+ // app.use middleware is user for all the outes.
 
 
  app.use("/api/code", codeRoutes);
