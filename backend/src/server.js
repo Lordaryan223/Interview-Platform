@@ -99,13 +99,10 @@ app.get("/video-call",protectRoute,(req,res)=>{
    res.status(200).json({msg:" video call endpoint"})
 })
 
+app.get("/", (req, res) => {
+  res.send("Backend running ✅");
+});
 
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-// 🔹 React router fallback (VERY IMPORTANT)
-app.get("/{*path}", (req, res) => {  // ✅
-   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
- });
 
 const PORT = process.env.PORT || 3000;
 
