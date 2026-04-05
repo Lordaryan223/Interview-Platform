@@ -62,6 +62,15 @@ app.use("/api/inngest", serve({
 
  app.use("/api/code", codeRoutes);
 
+ app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://interview-platform-r32c.onrender.com");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
+app.options('/{*path}', cors());
+
 
 // 🔹 Serve frontend
 const __dirname = path.resolve();
