@@ -107,27 +107,21 @@ app.get("/{*path}", (req, res) => {  // ✅
    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
  });
 
-
-app.get("/", (req, res) => {
-  res.send("Backend is running ✅");
-});
-
-
-
 const PORT = process.env.PORT || 3000;
 
+const startServer = async () => {
+  try {
+    await connectDB();
 
+    app.listen(PORT, () => {
+      console.log("✅ Server running on port", PORT);
+    });
 
-const startServer=async()=>{
-   try{
-     await connectDB();
-     app.listen(ENV.PORT,()=>{
-      console.log(" ✅server is running on port",ENV.PORT);
-   })
-   }catch(error){
-         console.log("❌error starting the server",error)
-
-   }
-}
+  } catch (error) {
+    console.log("❌ Error starting the server", error);
+  }
+};
 
 startServer();
+
+
