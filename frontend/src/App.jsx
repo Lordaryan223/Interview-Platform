@@ -4,7 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 
 import { Toaster } from "react-hot-toast";
 import DashboardPage from './pages/DashboardPagee.jsx';
-import HomePage from './pages/homepage';
+import HomePage from './pages/HomePage.jsx';
 import ProblemPage from './pages/ProblemPage';
 import ProblemsPage from './pages/ProblemsPage';
 import SessionPage from './pages/SessionPage.jsx';
