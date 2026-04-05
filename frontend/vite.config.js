@@ -9,5 +9,12 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss()
   ],
+   preview: {
+    host: true,
+    port: process.env.PORT || 4173,
+    allowedHosts: ["frontend-vqwh.onrender.com"]
+  }
   
 })
+
+
