@@ -26,6 +26,7 @@ createRoot(document.getElementById('root')).render(
     <ClerkProvider publishableKey={clerkPubKey}
     signInUrl="/sign-in"
     signUpUrl="/sign-up"
+    navigate={(to) => window.location.href = to}
   >
       <App />
     </ClerkProvider>
