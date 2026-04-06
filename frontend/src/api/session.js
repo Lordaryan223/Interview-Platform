@@ -10,16 +10,28 @@ export const sessionApi = {
   console.log("🔥 FINAL URL:", axiosInstance.defaults.baseURL + "/sessions/create");
 
         
-        const response = await axiosInstance.post("/sessions/create", data)
+        const response = await axiosInstance.post("/sessions/create", data,{
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ FIX
+      },
+    })
         console.log("🔥 RAW RESPONSE:", response);
         return response.data
     },
     getActiveSessions: async() => {
-        const response = await axiosInstance.get("/sessions/active")
+        const response = await axiosInstance.get("/sessions/active",{
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ FIX
+      },
+    })
         return response.data
     },
     getMyRecentSessions: async() => {
-        const response = await axiosInstance.get("/sessions/my-recent")
+        const response = await axiosInstance.get("/sessions/my-recent",{
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ FIX
+      },
+    })
         return response.data
     },
     getSessionById: async(id) => {

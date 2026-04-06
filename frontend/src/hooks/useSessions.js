@@ -5,7 +5,10 @@ import { sessionApi } from "../api/session"
 
 export const useCreateSession = () => {
   return useMutation({
-    mutationFn: (data) => sessionApi.createSession(data),
+     mutationFn: async (data) => {
+      const token = await getToken(); // ✅ GET TOKEN
+      return sessionApi.createSession(data, token);
+    },
 
     onSuccess: (data) => {
       toast.success("session created successfully");
@@ -22,7 +25,10 @@ export const useCreateSession = () => {
 export const useActiveSessions=()=>{
     const result=useQuery({
         queryKey:["activeSessions"],
-        queryFn:()=> sessionApi.getActiveSessions()
+        queryFn: async () => {
+      const token = await getToken();
+      return sessionApi.getActiveSessions(token);
+    },
     }) 
     return result
 }
