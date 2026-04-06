@@ -21,25 +21,17 @@ function DashboardPage() {
      const {data:activeSessionsData,isLoading:loadingActiveSessions}=useActiveSessions()
      const{data:recentSessionData,isLoading:loadingRecentSessions}=useMyRecentSession()
 
-      const handleCreateRoom=()=>{
-        if(!roomConfig.problem || !roomConfig.difficulty) return;
-
-        createSessionMutation.mutate({
+      const handleCreateRoom = () => {
+  createSessionMutation.mutate({
           problem:roomConfig.problem,
           difficulty:roomConfig.difficulty.toLowerCase()
-        },
-        {
-          onSuccess:(data)=>{
-            setShowCreateModal(false)
-            navigate(`/session/${data.session._id}`)
-          },
-          onError: (error) => {
-            console.error(error)}
-        }
-
-      )
-
-      }
+        }, {
+    onSuccess: (data) => {
+      const sessionId = data?._id || data?.session?._id;
+      navigate(`/session/${sessionId}`);
+    }
+  });
+};
 
 
 
