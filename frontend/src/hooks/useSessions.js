@@ -1,9 +1,11 @@
 import {useMutation, useQuery} from "@tanstack/react-query"
 import toast from "react-hot-toast"
 import { sessionApi } from "../api/session"
+import { useAuth } from "@clerk/clerk-react";
 
 
 export const useCreateSession = () => {
+  const { getToken } = useAuth();
   return useMutation({
      mutationFn: async (data) => {
       const token = await getToken(); // ✅ GET TOKEN
@@ -23,6 +25,7 @@ export const useCreateSession = () => {
 
 
 export const useActiveSessions=()=>{
+    const { getToken } = useAuth();
     const result=useQuery({
         queryKey:["activeSessions"],
         queryFn: async () => {
@@ -34,11 +37,16 @@ export const useActiveSessions=()=>{
 }
 
 export const useMyRecentSession=()=>{
-    const result=useQuery({
-        queryKey:["myRescentSessions"],
-        queryFn:()=> sessionApi.getMyRecentSessions()
-    }) 
-    return result
+  const { getToken } = useAuth();
+
+  const result = useQuery({
+    queryKey: ["myRescentSessions"],
+    queryFn: async () => {
+      const token = await getToken();
+      return sessionApi.getMyRecentSessions(token);
+    },
+  })
+  return result
 }
 
 export const useSessionById=(id)=>{

@@ -1,4 +1,3 @@
-
 import axiosInstance from '../lib/axios.js'
 
 
@@ -10,28 +9,16 @@ export const sessionApi = {
   console.log("🔥 FINAL URL:", axiosInstance.defaults.baseURL + "/sessions/create");
 
         
-        const response = await axiosInstance.post("/sessions/create", data,{
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ FIX
-      },
-    })
+        const response = await axiosInstance.post("/sessions/create", data)
         console.log("🔥 RAW RESPONSE:", response);
         return response.data
     },
     getActiveSessions: async() => {
-        const response = await axiosInstance.get("/sessions/active",{
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ FIX
-      },
-    })
+        const response = await axiosInstance.get("/sessions/active")
         return response.data
     },
     getMyRecentSessions: async() => {
-        const response = await axiosInstance.get("/sessions/my-recent",{
-      headers: {
-        Authorization: `Bearer ${token}`, // ✅ FIX
-      },
-    })
+        const response = await axiosInstance.get("/sessions/my-recent")
         return response.data
     },
     getSessionById: async(id) => {
