@@ -1,44 +1,37 @@
 import { chatClient, streamClient } from "../lib/stream.js";
 import  Session  from "../models/Session.js";
 
-export async function createSession(req,res){
-   try {
-     const {problem,difficulty}=req.body
-     const userId=req.user._id;
-     const clerkId=req.user.clerkId;
- 
-     if (!problem||!difficulty){
-         return res.status(400).json({message:"problem and difficulty are required"})
-     }
- 
-     const callId=`session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-  
- 
-     //create a session in db
-     const session=await Session.create({problem,difficulty,host:userId,callId})
- 
-     //create stream video call
-     await streamClient.video.call("default",callId).getOrCreate({
-         data:{
-             created_by_id:clerkId,
-             custom:{problem,difficulty,sessionId:session._id.toString()},   
-         }
-     })
-     //chat messaging
-     const channel=chatClient.channel("messaging",callId,{
-         name:`${problem} Session`,
-         created_by_id:clerkId,
-         members:[clerkId],
- 
-     })
-     await channel.create()
-     res.status(200).json({session});
-   } catch (error) {
-    console.log("Error in createSession controller:", error.message);
-    res.status(500).json({ message: "Internal Server Error" });
-    
-   }
+export async function createSession(req, res) {
+  try {
+    console.log("🔥 createSession HIT");
 
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const { problem, difficulty } = req.body;
+    const userId = req.user._id;
+    const clerkId = req.user.clerkId;
+
+    if (!problem || !difficulty) {
+      return res.status(400).json({ message: "problem and difficulty are required" });
+    }
+
+    const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+
+    const session = await Session.create({
+      problem,
+      difficulty,
+      host: userId,
+      callId,
+    });
+
+    res.status(200).json({ session });
+
+  } catch (error) {
+    console.log("❌ ERROR:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 export async function getActiveSessions(_,res) {
    try {
