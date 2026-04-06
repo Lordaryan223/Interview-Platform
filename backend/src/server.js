@@ -18,6 +18,8 @@ dotenv.config();
 
 const app = express();
 
+console.log("🔥 BACKEND VERSION 2");
+
 // 1. Clerk middleware FIRST
 app.use(clerkMiddleware())
 
