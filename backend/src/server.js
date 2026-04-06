@@ -58,6 +58,10 @@ app.use(cors({
 
  app.use(clerkMiddleware())
 
+  app.use("/api/sessions", (req, res, next) => {
+  console.log("Sessions route hit:", req.url);
+  next();
+}, sessionRoute);
 
 app.use("/api/inngest", serve({
    client: inngest,
@@ -66,16 +70,14 @@ app.use("/api/inngest", serve({
  app.use("/api/chat",chatRoutes)
  //app.use("/api/sessions",sessionRoute)
  
- app.use("/api", apiRoutes);
+
  // app.use middleware is user for all the outes.
 
 
  app.use("/api/code", codeRoutes);
+  app.use("/api", apiRoutes);
 
- app.use("/api/sessions", (req, res, next) => {
-  console.log("Sessions route hit:", req.url);
-  next();
-}, sessionRoute);
+
  
 
 
