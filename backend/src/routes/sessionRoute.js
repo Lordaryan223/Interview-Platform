@@ -10,7 +10,7 @@ import { createSession,
 
 const router=express.Router();
 
-router.post("/", (req, res, next) => {
+router.post("/create", (req, res, next) => {
   console.log("🔥 POST /api/sessions HIT");
   next();
 }, protectRoute, createSession);

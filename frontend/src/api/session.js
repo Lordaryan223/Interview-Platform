@@ -3,10 +3,10 @@ import axiosInstance from '../lib/axios.js'
 export const sessionApi = {
     createSession: async(data) => {
         console.log("🔥 BASE URL:", axiosInstance.defaults.baseURL);
-  console.log("🔥 FINAL URL:", axiosInstance.defaults.baseURL + "/sessions");
+  console.log("🔥 FINAL URL:", axiosInstance.defaults.baseURL + "/sessions/create");
 
         
-        const response = await axiosInstance.post("/sessions", data)
+        const response = await axiosInstance.post("/sessions/create", data)
         console.log("🔥 RAW RESPONSE:", response);
         return response.data
     },
