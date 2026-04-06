@@ -5,8 +5,9 @@ export const sessionApi = {
         console.log("🔥 BASE URL:", axiosInstance.defaults.baseURL);
   console.log("🔥 FINAL URL:", axiosInstance.defaults.baseURL + "/sessions");
 
-        console.log("🔥 RAW RESPONSE:", response);
+        
         const response = await axiosInstance.post("/sessions", data)
+        console.log("🔥 RAW RESPONSE:", response);
         return response.data
     },
     getActiveSessions: async() => {
