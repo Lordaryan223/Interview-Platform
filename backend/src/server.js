@@ -46,8 +46,10 @@ app.use(cors({
 app.use(express.json());
 
 // 4. Request logging (optional)
+
+
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
+  console.log("🔥 REQUEST:", req.method, req.url);
   next();
 });
 

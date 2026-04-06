@@ -67,10 +67,5 @@ export const useEndSession=()=>{
 
     
         })
-        return result
-    
-        
-        
-    
-    
+        return result   
 }
