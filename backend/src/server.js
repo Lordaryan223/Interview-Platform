@@ -56,7 +56,7 @@ app.use(cors({
   credentials: true,
 }));
 
- app.use(clerkMiddleware())
+ 
 
   app.use("/api/sessions", (req, res, next) => {
   console.log("Sessions route hit:", req.url);
@@ -75,7 +75,7 @@ app.use("/api/inngest", serve({
 
 
  app.use("/api/code", codeRoutes);
-  app.use("/api", apiRoutes);
+ // app.use("/api", apiRoutes);
 
 
  
