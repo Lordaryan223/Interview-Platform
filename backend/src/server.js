@@ -75,7 +75,7 @@ app.use("/api/inngest", serve({
 
 
  app.use("/api/code", codeRoutes);
- // app.use("/api", apiRoutes);
+  app.use("/api", apiRoutes);
 
 
  
