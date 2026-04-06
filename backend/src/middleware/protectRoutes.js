@@ -5,7 +5,10 @@ export const protectRoute=[
     requireAuth(),
     async(req,res,next)=>{
         try{
-             const clerkId = req.auth.userId;
+             const auth = req.auth(); // ✅ correct
+         console.log("AUTH DATA:", auth); // 🔍 debug
+
+      const clerkId = auth.userId;
             if(!clerkId) return res.status(401).json({message:"unauthrized access"})
 
                 const user=await User.findOne({clerkId})
