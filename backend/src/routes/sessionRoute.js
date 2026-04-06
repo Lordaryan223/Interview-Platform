@@ -10,7 +10,7 @@ import { createSession,
 
 const router=express.Router();
 
-router.post("/", protectRoute,createSession)
+router.post("/create", protectRoute,createSession)
 
 router.get("/active",protectRoute,getActiveSessions)
 router.get("/my-recent",protectRoute,getMyRecentSessions)
