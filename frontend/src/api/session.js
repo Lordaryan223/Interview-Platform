@@ -1,6 +1,10 @@
+
 import axiosInstance from '../lib/axios.js'
 
+
 export const sessionApi = {
+
+
     createSession: async(data) => {
         console.log("🔥 BASE URL:", axiosInstance.defaults.baseURL);
   console.log("🔥 FINAL URL:", axiosInstance.defaults.baseURL + "/sessions/create");

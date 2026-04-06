@@ -7,9 +7,11 @@ import { BrowserRouter } from 'react-router'
 import {QueryClient,
   QueryClientProvider
 } from "@tanstack/react-query"
-
+import { useAxiosAuth } from "./hooks/useAxiosAuth";
+import { use } from 'react'
 
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+
 
 
 
@@ -17,6 +19,11 @@ if(!clerkPubKey){
   console.log("clerk public key is missing")
 }
 const queryClient=new QueryClient()
+
+function AppWrapper(){
+  useAxiosAuth() // Initialize auth state on app load
+  return <App />
+}
 
 createRoot(document.getElementById('root')).render(
   
@@ -27,6 +34,7 @@ createRoot(document.getElementById('root')).render(
     signInUrl="/sign-in"
     signUpUrl="/sign-up"
     navigate={(to) => window.location.href = to}
+    
   >
       <App />
     </ClerkProvider>
