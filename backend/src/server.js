@@ -56,6 +56,7 @@ app.use("/api/sessions", sessionRoute);
 app.use("/api/inngest", serve({ client: inngest, functions }));
 app.use("/api/chat", chatRoutes);
 app.use("/api/code", codeRoutes);
+app.use("/api", apiRoutes) 
 
 // 6. Health check routes
 app.get("/health", (req, res) => {
