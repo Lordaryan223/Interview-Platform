@@ -22,15 +22,29 @@ function DashboardPage() {
      const{data:recentSessionData,isLoading:loadingRecentSessions}=useMyRecentSession()
 
       const handleCreateRoom = () => {
-  createSessionMutation.mutate({
-          problem:roomConfig.problem,
-          difficulty:roomConfig.difficulty.toLowerCase()
-        }, {
-    onSuccess: (data) => {
-      const sessionId = data?._id || data?.session?._id;
-      navigate(`/session/${sessionId}`);
+  createSessionMutation.mutate(
+    {
+      problem: roomConfig.problem,
+      difficulty: roomConfig.difficulty.toLowerCase(),
+    },
+    {
+      onSuccess: (data) => {
+        console.log("🔥 RESPONSE:", data);
+
+        const sessionId =
+          data?._id ||
+          data?.session?._id ||
+          data?.data?._id;
+
+        if (!sessionId) {
+          console.error("❌ Session ID missing!", data);
+          return;
+        }
+
+        navigate(`/session/${sessionId}`);
+      },
     }
-  });
+  );
 };
 
 
