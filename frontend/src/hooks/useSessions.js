@@ -66,7 +66,7 @@ export const useJoinSession=()=>{
           mutationKey:["joinSession"],
           mutationFn:sessionApi.joinSession,
           onSuccess:()=>toast.success("joined session successfully"),
-          onError:()=>toast.error(error.response?.data?.message|| "cound not join session")
+          onError:(error)=>toast.error(error.response?.data?.message|| "cound not join session")
 
      })
      return result

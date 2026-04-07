@@ -23,7 +23,7 @@ function SessionPage() {
 
   const {data:sessionData,isLoading:loadingSession,refetch}=useSessionById(id)
 
-  const joinSessionMutation=useJoinSession();
+  const {mutate:joinSession}=useJoinSession();
   const endSessionMutation=useEndSession();
 
   const session=sessionData?.session
@@ -47,7 +47,7 @@ const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClien
   useEffect(()=>{
     if(!session||!user||loadingSession) return ;
     if(isHost|| isParticipant) return ;
-    joinSessionMutation(id,{onSuccess:refetch})
+    joinSession(id,{onSuccess:refetch})
 
     
   },[session,user,loadingSession,isHost,isParticipant,id])
