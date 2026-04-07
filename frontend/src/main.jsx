@@ -21,26 +21,21 @@ if(!clerkPubKey){
 const queryClient=new QueryClient()
 
 function AppWrapper(){
-  useAxiosAuth() // Initialize auth state on app load
+  useAxiosAuth()
   return <App />
 }
 
 createRoot(document.getElementById('root')).render(
-  
   <StrictMode>
     <BrowserRouter>
-    <QueryClientProvider client ={queryClient}>
-    <ClerkProvider publishableKey={clerkPubKey}
-    signInUrl="/sign-in"
-    signUpUrl="/sign-up"
-    navigate={(to) => window.location.href = to}
-    
-  >
-      <App />
-    </ClerkProvider>
-    </QueryClientProvider>
-  </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <ClerkProvider publishableKey={clerkPubKey}
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+        >
+          <AppWrapper />  {/* ✅ inside ClerkProvider, replaces <App /> */}
+        </ClerkProvider>
+      </QueryClientProvider>
+    </BrowserRouter>
   </StrictMode>
 )
-
-console.log("API URL:", import.meta.env.VITE_API_URL);
