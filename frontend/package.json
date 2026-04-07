@@ -27,7 +27,8 @@
     "root": "github:tanstack/react-query",
     "stream-chat": "^9.40.0",
     "stream-chat-react": "^13.14.3",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.1",
+    "use-debounce": "^10.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

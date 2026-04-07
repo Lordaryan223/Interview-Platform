@@ -13,6 +13,7 @@ import OutputPanel from '../components/OutputPanel'
 import useStreamClient from '../hooks/useStreamClient'
 import { StreamCall, StreamVideo } from '@stream-io/video-react-sdk'
 import VideoCallUi from '../components/VideoCallUi'
+import { useDebouncedCallback } from 'use-debounce'
 
 function SessionPage() {
   const navigate=useNavigate()
@@ -65,6 +66,40 @@ const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClien
       setCode(problemData.starterCode[selectedLanguage])
     }
   },[problemData,selectedLanguage])
+  useEffect(() => {
+  if (!channel) return
+
+  const handleCodeUpdate = (event) => {
+    console.log("🔥 CODE UPDATE RECEIVED:", event.data)
+    setCode(event.data.code)
+    setSelectedLanguage(event.data.language)
+  }
+
+  const handleOutputUpdate = (event) => {
+    setoutput(event.data.output)
+  }
+
+  channel.on("code_update", handleCodeUpdate)
+  channel.on("output_update", handleOutputUpdate)
+
+  return () => {
+    channel.off("code_update", handleCodeUpdate)
+    channel.off("output_update", handleOutputUpdate)
+  }
+}, [channel])
+
+  const sendCodeUpdate = useDebouncedCallback(async (newCode) => {
+  if (channel) {
+    await channel.sendEvent({
+      type: "code_update",
+      data: { code: newCode, language: selectedLanguage }
+    })
+  }
+}, 300)
+const handleCodeChange = (newCode) => {
+  setCode(newCode)
+  sendCodeUpdate(newCode)
+}
 
   const handleLanguageChange=(e)=>{
    const newLang=e.target.value;
@@ -91,6 +126,12 @@ const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClien
     const result= await executeCode(selectedLanguage,code)
     setoutput(result)
     setIsRunning(false)
+    if (channel) {
+    await channel.sendEvent({
+      type: "output_update",
+      data: { output: result }
+    })
+  }
   }
   
   const handleEndSessions=()=>{
@@ -250,7 +291,7 @@ const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClien
               code={code}
               isRunning={isRunning}
               onLanguageChange={handleLanguageChange}
-              onCodeChange={setCode}
+              onCodeChange={handleCodeChange}
               onRunCode={handleRunCode}
                
               />
