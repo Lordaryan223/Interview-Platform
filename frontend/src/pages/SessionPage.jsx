@@ -69,11 +69,14 @@ const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClien
   useEffect(() => {
   if (!channel) return
 
+ 
   const handleCodeUpdate = (event) => {
+  // only update if the event came from someone else
     console.log("🔥 CODE UPDATE RECEIVED:", event.data)
-    setCode(event.data.code)
-    setSelectedLanguage(event.data.language)
-  }
+  if (event.user?.id === user?.id) return  
+  setCode(event.data.code)
+  setSelectedLanguage(event.data.language)
+}
 
   const handleOutputUpdate = (event) => {
     setoutput(event.data.output)
