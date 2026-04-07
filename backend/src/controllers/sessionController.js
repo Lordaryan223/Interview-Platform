@@ -117,12 +117,14 @@ export async function joinSession(req,res) {
           return   res.status(400).json({msg:"host can not join as a participant"})
         }
         
-        if(session.participants){
-            return  res.status(409).json({msg:"session is full "})
-        }           //is if(session.participants) is true then there is already a participant there can be only one participant
-
-        session.participants=userId
-        await session.save()
+      const alreadyJoined = session.participants.some(p => p.toString() === userId.toString())
+if (!alreadyJoined && session.participants.length >= 1) {
+    return res.status(409).json({ msg: "session is full" })
+}
+if (!alreadyJoined) {
+    session.participants.push(userId)
+    await session.save()
+}
 
         const channel= chatClient.channel("messaging",session.callId)
         await channel.addMembers([clerkId])

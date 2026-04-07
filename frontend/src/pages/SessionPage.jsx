@@ -29,7 +29,8 @@ function SessionPage() {
   const session=sessionData?.session
 
   const isHost=session?.host?.clerkId===user?.id
-  const isParticipant=session?.participants?.clerkId===user?.id
+
+  const isParticipant = session?.participants?.some(p => p.clerkId === user?.id)
 
 const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClient(
   session,
@@ -43,14 +44,14 @@ const {call,channel,chatClient, isInitializingCall, streamClient}=useStreamClien
 
   const [selectedLanguage,setSelectedLanguage]=useState("javascript")
   const [code,setCode]=useState(problemData?.starterCode?.[selectedLanguage]||"")
+    const [hasAttemptedJoin, setHasAttemptedJoin] = useState(false)
 
-  useEffect(()=>{
-    if(!session||!user||loadingSession) return ;
-    if(isHost|| isParticipant) return ;
-    joinSession(id,{onSuccess:refetch})
-
-    
-  },[session,user,loadingSession,isHost,isParticipant,id])
+  useEffect(() => {
+  if (!session || !user || loadingSession) return;
+  if (isHost || isParticipant || hasAttemptedJoin) return;
+  setHasAttemptedJoin(true)
+  joinSession(id, { onSuccess: refetch })
+}, [session, user, loadingSession, isHost, isParticipant, id])
 
 
   useEffect(()=>{
