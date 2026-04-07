@@ -22,6 +22,7 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
 
       try {
         const { token, userId, userName, userImage } = await sessionApi.getStreamToken();
+        console.log("🔥 STREAM USER:", userId, userName);
 
         const client = await initializeStreamClient(
           {
