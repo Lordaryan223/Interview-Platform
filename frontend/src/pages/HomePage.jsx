@@ -11,17 +11,22 @@ import {
 import { SignInButton } from "@clerk/clerk-react";
 import ProblemPage from "./ProblemPage";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import {useUser} from "@clerk/clerk-react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
 
 function HomePage() {
+  const {isSignedIn,isLoaded}=useUser
 
   const navigate=useNavigate()
 
   return (
     <div className="bg-linear-to-br from-base-100 via-base-200 to-base-300">
-      {/* NAVBAR */}
+      
       <nav className="bg-base-100/80 backdrop-blur-md border-b border-primary/20 sticky top-0 z-50 shadow-lg">
         <div className="max-w-7xl mx-auto p-4 flex items-center justify-between">
           {/* LOGO */}
+          
           <Link
             to={"/"}
             className="flex items-center gap-3 hover:scale-105 transition-transform duration-200"
@@ -39,12 +44,22 @@ function HomePage() {
           </Link>
 
           {/* AUTH BTN */}
-          <SignInButton mode="modal">
-            <button className="group px-6 py-3 bg-linear-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2">
-              <span>Get Started</span>
-              <ArrowRightIcon className="size-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </SignInButton>
+          <SignedOut>
+  <SignInButton mode="modal">
+    <button className="group px-6 py-3 bg-linear-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2">
+      <span>Get Started</span>
+      <ArrowRightIcon className="size-4 group-hover:translate-x-0.5 transition-transform" />
+    </button>
+  </SignInButton>
+</SignedOut>
+<SignedIn>
+  <button
+    onClick={() => navigate("/dashboard")}
+    className="btn btn-primary"
+  >
+    Go to Dashboard
+  </button>
+</SignedIn>
         </div>
       </nav>
 
